@@ -6,8 +6,6 @@ async function loadDiscussions() {
         const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
         const post = await response.json();
 
-        container.innerHTML = ""; // clear loading text
-
         // Extract URLs from the post body
         const urlRegex = /(https?:\/\/[^\s]+)/g;
         const urls = post.body.match(urlRegex);
@@ -17,6 +15,7 @@ async function loadDiscussions() {
             return;
         }
 
+        // Build streamer objects
         const streamers = await Promise.all(urls.map(async (url) => {
             let username = url
                 .replace("https://www.twitch.tv/", "")
@@ -25,11 +24,10 @@ async function loadDiscussions() {
                 .replace("http://twitch.tv/", "")
                 .trim();
 
-            // Fetch Twitch user info (stable avatar)
-            const userInfo = await fetch(`https://decapi.me/twitch/user/${username}`).then(r => r.json());
+            const cleanName = username.charAt(0).toUpperCase() + username.slice(1);
 
-            const avatarUrl = userInfo.logo || "";
-            const cleanName = userInfo.display_name || username;
+            // Twitch avatar
+            const avatarUrl = `https://decapi.me/twitch/avatar/${username}`;
 
             // Twitch live status
             const uptime = await fetch(`https://decapi.me/twitch/uptime/${username}`).then(r => r.text());
@@ -44,7 +42,7 @@ async function loadDiscussions() {
             };
         }));
 
-        // Sort: LIVE first
+        // Sort: LIVE first, then offline
         streamers.sort((a, b) => b.isLive - a.isLive);
 
         // Render cards
@@ -57,13 +55,10 @@ async function loadDiscussions() {
                 card.classList.add("live-card");
             }
 
-            const liveBadge = s.isLive ? `<div class="live-badge">LIVE NOW</div>` : "";
-            const avatar = s.avatarUrl
-                ? `<img src="${s.avatarUrl}" class="avatar" alt="${s.cleanName} avatar">`
-                : `<div class="avatar placeholder">No Image</div>`;
-
+            const avatar = `<img src="${s.avatarUrl}" class="avatar" alt="${s.cleanName} avatar">`;
             const title = `<div class="post-title">${s.cleanName}</div>`;
             const link = `<a class="post-link" href="${s.url}" target="_blank">${s.url}</a>`;
+            const liveBadge = s.isLive ? `<div class="live-badge">LIVE NOW</div>` : "";
 
             card.innerHTML = liveBadge + avatar + title + link;
             container.appendChild(card);
