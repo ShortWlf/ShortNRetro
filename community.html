@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Members • ShortNRetro</title>
+
+    <!-- Pixel Retro Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        /* GLOBAL -------------------------------------------------- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #050505;
+            color: #e0e0e0;
+            font-family: 'Press Start 2P', cursive;
+            line-height: 1.8;
+            text-align: center;
+
+            background-image: radial-gradient(rgba(255, 0, 255, 0.04), transparent 70%);
+            background-size: 800px 800px;
+        }
+
+        h1, h2 {
+            color: #ff7ae6;
+            text-shadow:
+                0 0 4px #ff7ae6,
+                0 0 10px #b84dff;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* NAVBAR -------------------------------------------------- */
+        .navbar {
+            width: 100%;
+            background: rgba(10, 0, 15, 0.85);
+            border-bottom: 2px solid #ff7ae6;
+            padding: 15px 0;
+            backdrop-filter: blur(4px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .navbar a {
+            color: #ff7ae6;
+            text-decoration: none;
+            font-size: 12px;
+            text-shadow: 0 0 4px #ff7ae6;
+            transition: 0.2s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        /* COMMUNITY FEED ------------------------------------------ */
+        #feed-container {
+            margin-top: 40px;
+        }
+
+        .post-card {
+            background: #0a0a0a;
+            border: 2px solid #ff7ae6;
+            box-shadow: 0 0 10px #b84dff;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .post-title {
+            font-size: 14px;
+            color: #ffbdf4;
+            margin-bottom: 10px;
+        }
+
+        .post-meta {
+            font-size: 10px;
+            color: #aaa;
+            margin-bottom: 15px;
+        }
+
+        .post-body {
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .post-link {
+            color: #ff7ae6;
+            text-decoration: none;
+            font-size: 12px;
+            text-shadow: 0 0 4px #ff7ae6;
+        }
+
+        .post-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        /* FOOTER -------------------------------------------------- */
+        footer {
+            padding: 40px;
+            font-size: 10px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html#hero">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#schedule">Schedule</a></li>
+            <li><a href="index.html#links">Links</a></li>
+            <li><a href="index.html#community">Community</a></li>
+            <li><a href="community.html">Community Members</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <section>
+        <h1>Community Members</h1>
+        <p>Live posts from our GitHub Discussions — updated automatically.</p>
+
+        <div id="feed-container">
+            <p>Loading community posts...</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 ShortNRetro</p>
+    </footer>
+
+    <!-- DISCUSSIONS FETCH SCRIPT -------------------------------- -->
+    <script>
+        async function loadDiscussions() {
+            const container = document.getElementById("feed-container");
+
+            try {
+                const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions");
+                const data = await response.json();
+
+                container.innerHTML = ""; // clear loading text
+
+                data.forEach(post => {
+                    const card = document.createElement("div");
+                    card.className = "post-card";
+
+                    const title = `<div class="post-title">${post.title}</div>`;
+                    const meta = `<div class="post-meta">Posted by ${post.user.login} — ${new Date(post.created_at).toLocaleString()}</div>`;
+                    const body = `<div class="post-body">${post.body.slice(0, 200)}...</div>`;
+                    const link = `<a class="post-link" href="${post.html_url}" target="_blank">Read Full Post</a>`;
+
+                    card.innerHTML = title + meta + body + link;
+                    container.appendChild(card);
+                });
+
+            } catch (err) {
+                container.innerHTML = "<p>Failed to load community posts.</p>";
+            }
+        }
+
+        loadDiscussions();
+    </script>
+
+</body>
+</html>
