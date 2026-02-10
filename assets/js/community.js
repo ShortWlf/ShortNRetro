@@ -1,262 +1,145 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Members • ShortNRetro</title>
+async function loadDiscussions() {
+    const container = document.getElementById("feed-container");
 
-    <!-- Pixel Retro Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    try {
+        // Fetch ONLY Discussion #2
+        const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
+        const post = await response.json();
 
-    <style>
-        /* GLOBAL -------------------------------------------------- */
-        html {
-            scroll-behavior: smooth;
+        container.innerHTML = ""; // clear loading text
+
+        // Extract URLs from the post body
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = post.body.match(urlRegex);
+
+        if (!urls || urls.length === 0) {
+            container.innerHTML = "<p>No streamers listed yet.</p>";
+            return;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: #050505;
-            color: #e0e0e0;
-            font-family: 'Press Start 2P', cursive;
-            line-height: 1.8;
-            text-align: center;
-            background-image: radial-gradient(rgba(255, 0, 255, 0.04), transparent 70%);
-            background-size: 800px 800px;
-        }
+        const streamers = await Promise.all(
+            urls.map(async (url) => {
+                let username = url
+                    .replace("https://www.twitch.tv/", "")
+                    .replace("http://www.twitch.tv/", "")
+                    .replace("https://twitch.tv/", "")
+                    .replace("http://twitch.tv/", "")
+                    .trim();
 
-        h1, h2 {
-            color: #ff7ae6;
-            text-shadow:
-                0 0 4px #ff7ae6,
-                0 0 10px #b84dff;
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-        }
+                // Twitch user info (avatar, display name, bio, followers)
+                let userInfo = null;
+                try {
+                    userInfo = await fetch(`https://decapi.me/twitch/user/${username}`).then(r => r.json());
+                } catch {
+                    userInfo = {};
+                }
 
-        section {
-            padding: 80px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+                const avatarUrl = userInfo.logo || "";
+                const cleanName = userInfo.display_name || username;
+                const followers = typeof userInfo.followers === "number" ? userInfo.followers : null;
+                const bioFull = userInfo.bio || "";
+                const bio = bioFull.length > 80 ? bioFull.slice(0, 77) + "..." : bioFull;
 
-        /* HEADER -------------------------------------------------- */
-        .hero {
-            padding: 120px 20px 60px;
-            background: linear-gradient(180deg, #1a001f, #050505);
-            border-bottom: 2px solid #ff7ae6;
-        }
+                // Twitch live status
+                let uptimeText = "";
+                let isLive = false;
+                try {
+                    uptimeText = await fetch(`https://decapi.me/twitch/uptime/${username}`).then(r => r.text());
+                    isLive = !uptimeText.toLowerCase().includes("offline");
+                } catch {
+                    isLive = false;
+                }
 
-        .tagline {
-            font-size: 12px;
-            margin-top: 14px;
-            color: #ffbdf4;
-            text-shadow: 0 0 4px #ff7ae6;
-        }
+                // Game they’re playing
+                let game = "";
+                try {
+                    game = await fetch(`https://decapi.me/twitch/game/${username}`).then(r => r.text());
+                    if (game.toLowerCase().includes("offline")) game = "";
+                } catch {
+                    game = "";
+                }
 
-        /* NAVBAR -------------------------------------------------- */
-        .navbar {
-            width: 100%;
-            background: rgba(10, 0, 15, 0.85);
-            border-bottom: 2px solid #ff7ae6;
-            padding: 15px 0;
-            backdrop-filter: blur(4px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+                // Stream preview thumbnail
+                let thumbnailUrl = "";
+                try {
+                    thumbnailUrl = await fetch(`https://decapi.me/twitch/thumbnail/${username}`).then(r => r.text());
+                } catch {
+                    thumbnailUrl = "";
+                }
 
-        .navbar ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+                return {
+                    username,
+                    cleanName,
+                    url,
+                    avatarUrl,
+                    followers,
+                    bio,
+                    game,
+                    isLive,
+                    thumbnailUrl
+                };
+            })
+        );
 
-        .navbar li {
-            display: inline-block;
-            margin: 0 20px;
-        }
+        // Sort: LIVE first
+        streamers.sort((a, b) => Number(b.isLive) - Number(a.isLive));
 
-        .navbar a {
-            color: #ff7ae6;
-            text-decoration: none;
-            font-size: 12px;
-            text-shadow: 0 0 4px #ff7ae6;
-            transition: 0.2s ease;
-        }
+        // Render cards
+        container.innerHTML = "";
+        streamers.forEach(s => {
+            const card = document.createElement("div");
+            card.className = "post-card";
+            if (s.isLive) card.classList.add("live-card");
 
-        .navbar a:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px #ffffff;
-        }
+            const liveBadge = s.isLive ? `<div class="live-badge">LIVE NOW</div>` : "";
 
-        /* STREAMER CARDS ------------------------------------------ */
-        #feed-container {
-            margin-top: 40px;
-        }
+            const avatar = s.avatarUrl
+                ? `<img src="${s.avatarUrl}" class="avatar" alt="${s.cleanName} avatar">`
+                : `<div class="avatar placeholder">No Image</div>`;
 
-        .post-card {
-            background: #0a0a0a;
-            border: 2px solid #ff7ae6;
-            box-shadow: 0 0 10px #b84dff;
-            padding: 25px;
-            margin-bottom: 40px;
-            border-radius: 10px;
-            text-align: left;
-        }
+            const followersText = s.followers !== null
+                ? `<div class="followers">Followers: ${s.followers}</div>`
+                : "";
 
-        .post-inner {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
+            const bioText = s.bio
+                ? `<div class="bio">Bio: ${s.bio}</div>`
+                : "";
 
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            border: 2px solid #ff7ae6;
-            box-shadow: 0 0 10px #b84dff;
-            flex-shrink: 0;
-        }
+            const gameText = s.game
+                ? `<div class="game">Game: ${s.game}</div>`
+                : "";
 
-        .avatar.placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #222;
-            color: #777;
-            font-size: 10px;
-        }
+            const thumbnail = s.thumbnailUrl
+                ? `<div class="thumbnail-wrapper"><img src="${s.thumbnailUrl}" class="thumbnail" alt="${s.cleanName} stream thumbnail"></div>`
+                : "";
 
-        .post-content {
-            flex: 1;
-        }
+            const link = `<a class="post-link" href="${s.url}" target="_blank">${s.url}</a>`;
 
-        .post-title-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 6px;
-        }
+            card.innerHTML = `
+                <div class="post-inner">
+                    ${avatar}
+                    <div class="post-content">
+                        <div class="post-title-row">
+                            <div class="post-title">${s.cleanName}</div>
+                            ${liveBadge}
+                        </div>
+                        ${followersText}
+                        ${bioText}
+                        ${gameText}
+                        ${thumbnail}
+                        ${link}
+                    </div>
+                </div>
+            `;
 
-        .post-title {
-            font-size: 14px;
-            color: #ffbdf4;
-        }
+            container.appendChild(card);
+        });
 
-        .followers,
-        .bio,
-        .game {
-            font-size: 11px;
-            margin-bottom: 4px;
-        }
+    } catch (err) {
+        container.innerHTML = "<p>Failed to load streamer list.</p>";
+    }
+}
 
-        .bio {
-            color: #ccc;
-        }
-
-        .game {
-            color: #ffbdf4;
-        }
-
-        .thumbnail-wrapper {
-            margin: 14px 0;
-            text-align: center;
-        }
-
-        .thumbnail {
-            width: 200px;
-            height: auto;
-            border-radius: 8px;
-            border: 2px solid #ff7ae6;
-            box-shadow: 0 0 10px #b84dff;
-        }
-
-        .post-link {
-            color: #ff7ae6;
-            text-decoration: none;
-            font-size: 12px;
-            text-shadow: 0 0 4px #ff7ae6;
-        }
-
-        .post-link:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-        /* LIVE BADGE + LIVE BORDER -------------------------------- */
-        .live-badge {
-            background: #ff003c;
-            color: white;
-            padding: 4px 8px;
-            display: inline-block;
-            font-size: 10px;
-            border-radius: 6px;
-            box-shadow: 0 0 10px #ff003c;
-        }
-
-        .live-card {
-            border-color: #ff003c;
-            animation: livePulse 1.5s infinite alternate;
-        }
-
-        @keyframes livePulse {
-            from {
-                box-shadow: 0 0 10px #ff003c;
-            }
-            to {
-                box-shadow: 0 0 20px #ff003c;
-            }
-        }
-
-        /* FOOTER -------------------------------------------------- */
-        footer {
-            padding: 40px;
-            font-size: 10px;
-            color: #777;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- HEADER -->
-    <header class="hero">
-        <h1>Community Members</h1>
-        <p class="tagline">Live & Offline Streamers from Our Community Thread</p>
-    </header>
-
-    <!-- NAVBAR (under header, matching index.html) -->
-    <nav class="navbar">
-        <ul>
-            <li><a href="index.html#hero">Home</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#schedule">Schedule</a></li>
-            <li><a href="index.html#links">Links</a></li>
-            <li><a href="index.html#community">Community</a></li>
-            <li><a href="community.html">Community Members</a></li>
-        </ul>
-    </nav>
-
-    <!-- STREAMER LIST -->
-    <section>
-        <h2>Streamer Directory</h2>
-        <p>Automatically updated from our GitHub Discussions thread.</p>
-
-        <div id="feed-container">
-            <p>Loading streamer list...</p>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>© 2026 ShortNRetro</p>
-    </footer>
-
-    <!-- JS FETCHER -->
-    <script src="assets/js/community.js"></script>
-
-</body>
-</html>
+// Auto-refresh every 60 seconds
+loadDiscussions();
+setInterval(loadDiscussions, 60000);
