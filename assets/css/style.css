@@ -1,0 +1,99 @@
+/* GLOBAL -------------------------------------------------- */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #e6e6e6;
+    font-family: 'Press Start 2P', cursive;
+    line-height: 1.6;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #b86bff;
+    text-shadow: 0 0 6px #b86bff;
+}
+
+section {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* HERO -------------------------------------------------- */
+
+.hero {
+    padding: 60px 20px;
+    background: linear-gradient(180deg, #1a0033, #0d0d0d);
+    border-bottom: 4px solid #b86bff;
+}
+
+.tagline {
+    font-size: 12px;
+    margin-top: 10px;
+    color: #d9b3ff;
+}
+
+/* ABOUT -------------------------------------------------- */
+
+.about p {
+    margin-bottom: 20px;
+}
+
+/* SCHEDULE -------------------------------------------------- */
+
+.schedule {
+    background: #111;
+    border-top: 2px solid #b86bff;
+    border-bottom: 2px solid #b86bff;
+}
+
+/* LINKS -------------------------------------------------- */
+
+.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.links li {
+    margin: 12px 0;
+}
+
+.links a {
+    color: #b86bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.links a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px #b86bff;
+}
+
+/* COMMUNITY -------------------------------------------------- */
+
+.button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #b86bff;
+    color: #0d0d0d;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 8px #b86bff;
+}
+
+.button:hover {
+    background: #ffffff;
+    color: #0d0d0d;
+    box-shadow: 0 0 12px #ffffff;
+}
+
+/* FOOTER -------------------------------------------------- */
+
+footer {
+    padding: 20px;
+    font-size: 10px;
+    color: #666;
+}
