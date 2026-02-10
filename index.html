@@ -23,17 +23,15 @@
             line-height: 1.8;
             text-align: center;
 
-            background-image: radial-gradient(rgba(255, 0, 255, 0.05), transparent 70%);
+            background-image: radial-gradient(rgba(255, 0, 255, 0.04), transparent 70%);
             background-size: 800px 800px;
         }
 
         h1, h2 {
-            color: #ff4df0;
+            color: #ff7ae6; /* softer neon pink */
             text-shadow:
-                0 0 6px #ff4df0,
-                0 0 12px #b300ff,
-                0 0 20px #ff4df0,
-                0 0 40px #b300ff;
+                0 0 4px #ff7ae6,
+                0 0 10px #b84dff;
             margin-bottom: 25px;
             letter-spacing: 2px;
         }
@@ -44,16 +42,30 @@
             margin: 0 auto;
         }
 
-        /* NAVBAR -------------------------------------------------- */
+        /* HERO -------------------------------------------------- */
+        .hero {
+            padding: 120px 20px 60px;
+            background: linear-gradient(180deg, #1a001f, #050505);
+            border-bottom: 2px solid #ff7ae6;
+        }
+
+        .tagline {
+            font-size: 12px;
+            margin-top: 14px;
+            color: #ffbdf4;
+            text-shadow: 0 0 4px #ff7ae6;
+        }
+
+        /* NAVBAR (now under hero) -------------------------------- */
         .navbar {
+            width: 100%;
+            background: rgba(10, 0, 15, 0.85);
+            border-bottom: 2px solid #ff7ae6;
+            padding: 15px 0;
+            backdrop-filter: blur(4px);
             position: sticky;
             top: 0;
-            width: 100%;
-            background: rgba(10, 0, 15, 0.9);
-            border-bottom: 2px solid #ff4df0;
-            padding: 15px 0;
             z-index: 1000;
-            backdrop-filter: blur(4px);
         }
 
         .navbar ul {
@@ -68,30 +80,16 @@
         }
 
         .navbar a {
-            color: #ff4df0;
+            color: #ff7ae6;
             text-decoration: none;
             font-size: 12px;
-            text-shadow: 0 0 6px #ff4df0;
+            text-shadow: 0 0 4px #ff7ae6;
             transition: 0.2s ease;
         }
 
         .navbar a:hover {
             color: #ffffff;
-            text-shadow: 0 0 12px #ffffff;
-        }
-
-        /* HERO -------------------------------------------------- */
-        .hero {
-            padding: 120px 20px 100px;
-            background: linear-gradient(180deg, #1a001f, #050505);
-            border-bottom: 3px solid #ff4df0;
-        }
-
-        .tagline {
-            font-size: 12px;
-            margin-top: 14px;
-            color: #ffb3fa;
-            text-shadow: 0 0 6px #ff4df0;
+            text-shadow: 0 0 10px #ffffff;
         }
 
         /* ABOUT -------------------------------------------------- */
@@ -102,8 +100,8 @@
         /* SCHEDULE -------------------------------------------------- */
         .schedule {
             background: #0a0a0a;
-            border-top: 2px solid #ff4df0;
-            border-bottom: 2px solid #ff4df0;
+            border-top: 2px solid #ff7ae6;
+            border-bottom: 2px solid #ff7ae6;
         }
 
         /* LINKS -------------------------------------------------- */
@@ -117,16 +115,16 @@
         }
 
         .links a {
-            color: #ff4df0;
+            color: #ff7ae6;
             text-decoration: none;
             font-size: 14px;
-            text-shadow: 0 0 6px #ff4df0;
+            text-shadow: 0 0 4px #ff7ae6;
             transition: 0.2s ease;
         }
 
         .links a:hover {
             color: #ffffff;
-            text-shadow: 0 0 12px #ffffff;
+            text-shadow: 0 0 10px #ffffff;
         }
 
         /* BUTTON -------------------------------------------------- */
@@ -134,18 +132,18 @@
             display: inline-block;
             margin-top: 30px;
             padding: 16px 26px;
-            background: #ff4df0;
+            background: #ff7ae6;
             color: #050505;
             text-decoration: none;
             border: 2px solid #ffffff;
-            box-shadow: 0 0 12px #ff4df0;
+            box-shadow: 0 0 8px #ff7ae6;
             transition: 0.2s ease;
         }
 
         .button:hover {
             background: #ffffff;
             color: #050505;
-            box-shadow: 0 0 16px #ffffff;
+            box-shadow: 0 0 12px #ffffff;
         }
 
         /* FOOTER -------------------------------------------------- */
@@ -159,7 +157,13 @@
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- HERO HEADER -->
+    <header id="hero" class="hero">
+        <h1>ShortNRetro</h1>
+        <p class="tagline">Game Dev • Retro Vibes • Variety Streaming</p>
+    </header>
+
+    <!-- NAVBAR (now below hero) -->
     <nav class="navbar">
         <ul>
             <li><a href="#hero">Home</a></li>
@@ -169,12 +173,6 @@
             <li><a href="#community">Community</a></li>
         </ul>
     </nav>
-
-    <!-- HERO HEADER -->
-    <header id="hero" class="hero">
-        <h1>ShortNRetro</h1>
-        <p class="tagline">Game Dev • Retro Vibes • Variety Streaming</p>
-    </header>
 
     <!-- ABOUT US -->
     <section id="about" class="about">
