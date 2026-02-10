@@ -1,2 +1,0 @@
-# ShortNRetro
-Streamer Duo Repo
