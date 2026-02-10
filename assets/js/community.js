@@ -6,8 +6,6 @@ async function loadDiscussions() {
         const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
         const post = await response.json();
 
-        container.innerHTML = ""; // clear loading text
-
         // Extract URLs from the post body
         const urlRegex = /(https?:\/\/[^\s]+)/g;
         const urls = post.body.match(urlRegex);
@@ -17,11 +15,8 @@ async function loadDiscussions() {
             return;
         }
 
-        urls.forEach(url => {
-            const card = document.createElement("div");
-            card.className = "post-card";
-
-            // Extract Twitch username
+        // Build streamer objects
+        const streamers = await Promise.all(urls.map(async (url) => {
             let username = url
                 .replace("https://www.twitch.tv/", "")
                 .replace("http://www.twitch.tv/", "")
@@ -29,20 +24,43 @@ async function loadDiscussions() {
                 .replace("http://twitch.tv/", "")
                 .trim();
 
-            // Capitalize properly (TruestSkeleton)
             const cleanName = username.charAt(0).toUpperCase() + username.slice(1);
 
-            // Twitch avatar API
+            // Twitch avatar
             const avatarUrl = `https://decapi.me/twitch/avatar/${username}`;
 
-            const avatar = `
-                <img src="${avatarUrl}" class="avatar" alt="${cleanName} avatar">
-            `;
+            // Twitch live status
+            const uptime = await fetch(`https://decapi.me/twitch/uptime/${username}`).then(r => r.text());
+            const isLive = !uptime.toLowerCase().includes("offline");
 
-            const title = `<div class="post-title">${cleanName}</div>`;
-            const link = `<a class="post-link" href="${url}" target="_blank">${url}</a>`;
+            return {
+                username,
+                cleanName,
+                url,
+                avatarUrl,
+                isLive
+            };
+        }));
 
-            card.innerHTML = avatar + title + link;
+        // Sort: LIVE first, then offline
+        streamers.sort((a, b) => b.isLive - a.isLive);
+
+        // Render cards
+        container.innerHTML = "";
+        streamers.forEach(s => {
+            const card = document.createElement("div");
+            card.className = "post-card";
+
+            if (s.isLive) {
+                card.classList.add("live-card");
+            }
+
+            const avatar = `<img src="${s.avatarUrl}" class="avatar" alt="${s.cleanName} avatar">`;
+            const title = `<div class="post-title">${s.cleanName}</div>`;
+            const link = `<a class="post-link" href="${s.url}" target="_blank">${s.url}</a>`;
+            const liveBadge = s.isLive ? `<div class="live-badge">LIVE NOW</div>` : "";
+
+            card.innerHTML = liveBadge + avatar + title + link;
             container.appendChild(card);
         });
 
@@ -51,4 +69,6 @@ async function loadDiscussions() {
     }
 }
 
+// Auto-refresh every 60 seconds
 loadDiscussions();
+setInterval(loadDiscussions, 60000);
