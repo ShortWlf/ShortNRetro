@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeamSpeak • ShortNRetro</title>
 
-    <!-- Pixel Retro Font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
@@ -33,7 +32,6 @@
             margin: 0 auto;
         }
 
-        /* HEADER */
         .hero {
             padding: 120px 20px 60px;
             background: linear-gradient(180deg, #1a001f, #050505);
@@ -47,7 +45,6 @@
             text-shadow: 0 0 4px #ff7ae6;
         }
 
-        /* NAVBAR */
         .navbar {
             width: 100%;
             background: rgba(10, 0, 15, 0.85);
@@ -83,7 +80,6 @@
             text-shadow: 0 0 10px #ffffff;
         }
 
-        /* WIDGET BOX */
         .widget-box {
             background: #0a0a0a;
             border: 2px solid #ff7ae6;
@@ -93,23 +89,17 @@
             margin-top: 40px;
         }
 
-        /* QUICK CONNECT BUTTON */
-        .connect-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 20px;
-            background: #ff7ae6;
-            color: #000;
-            font-size: 12px;
-            border-radius: 8px;
-            text-decoration: none;
-            box-shadow: 0 0 10px #ff7ae6;
+        .retro-img {
+            width: 100%;
+            max-width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #b84dff;
+            margin-bottom: 25px;
             transition: 0.2s ease;
         }
 
-        .connect-btn:hover {
-            background: #ffffff;
-            box-shadow: 0 0 15px #ffffff;
+        .retro-img:hover {
+            box-shadow: 0 0 25px #ff7ae6;
         }
 
         footer {
@@ -140,6 +130,19 @@
     </nav>
 
     <section>
-        <h2>Live Server Status</h2>
+        <h2>Server Panel</h2>
 
         <div class="widget-box">
+            <!-- Retro-styled image with connect link -->
+            <a href="ts3server://snrts.ddns.net?port=9987">
+                <img src="https://github.com/ShortWlf/ShortNRetro/blob/main/assets/images/tsconnect.png" class="retro-img" alt="TeamSpeak Retro Panel">
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 ShortNRetro</p>
+    </footer>
+
+</body>
+</html>
