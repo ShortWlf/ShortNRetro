@@ -1,6 +1,9 @@
 async function safeFetch(url, type = "text") {
     try {
-        const res = await fetch(url, { cache: "no-store" });
+        const res = await fetch(url, {
+            cache: "no-store",
+            headers: { "User-Agent": "ShortNRetroSite" }
+        });
         if (!res.ok) return null;
         return type === "json" ? await res.json() : await res.text();
     } catch {
@@ -11,8 +14,11 @@ async function safeFetch(url, type = "text") {
 async function loadDiscussions() {
     const container = document.getElementById("feed-container");
 
-    // Fetch ONLY Discussion #2
-    const post = await safeFetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2", "json");
+    // Fetch ONLY Discussion #2 with required header
+    const post = await safeFetch(
+        "https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2",
+        "json"
+    );
 
     if (!post || !post.body) {
         container.innerHTML = "<p>Failed to load streamer list.</p>";
@@ -30,50 +36,29 @@ async function loadDiscussions() {
         return;
     }
 
-    const streamers = await Promise.all(
-        urls.map(async (url) => {
-            let username = url
-                .replace("https://www.twitch.tv/", "")
-                .replace("http://www.twitch.tv/", "")
-                .replace("https://twitch.tv/", "")
-                .replace("http://twitch.tv/", "")
-                .trim();
+    const streamers = urls.map(url => {
+        let username = url
+            .replace("https://www.twitch.tv/", "")
+            .replace("http://www.twitch.tv/", "")
+            .replace("https://twitch.tv/", "")
+            .replace("http://twitch.tv/", "")
+            .trim();
 
-            // Basic Twitch user info (avatar + display name)
-            const userInfo = await safeFetch(`https://decapi.me/twitch/user/${username}`, "json") || {};
+        return {
+            username,
+            cleanName: username.charAt(0).toUpperCase() + username.slice(1),
+            url,
+            avatarUrl: "", // we add this back later
+            isLive: false  // we add this back later
+        };
+    });
 
-            const avatarUrl = userInfo.logo || "";
-            const cleanName = userInfo.display_name || username;
-
-            // Live status only
-            const uptime = await safeFetch(`https://decapi.me/twitch/uptime/${username}`) || "offline";
-            const isLive = !uptime.toLowerCase().includes("offline");
-
-            return {
-                username,
-                cleanName,
-                url,
-                avatarUrl,
-                isLive
-            };
-        })
-    );
-
-    // Sort LIVE first
-    streamers.sort((a, b) => Number(b.isLive) - Number(a.isLive));
-
-    // Render cards
+    // Render minimal cards
     streamers.forEach(s => {
         const card = document.createElement("div");
         card.className = "post-card";
-        if (s.isLive) card.classList.add("live-card");
 
-        const liveBadge = s.isLive ? `<div class="live-badge">LIVE NOW</div>` : "";
-
-        const avatar = s.avatarUrl
-            ? `<img src="${s.avatarUrl}" class="avatar" alt="${s.cleanName} avatar">`
-            : `<div class="avatar placeholder">No Image</div>`;
-
+        const avatar = `<div class="avatar placeholder">No Image</div>`;
         const link = `<a class="post-link" href="${s.url}" target="_blank">${s.url}</a>`;
 
         card.innerHTML = `
@@ -82,7 +67,6 @@ async function loadDiscussions() {
                 <div class="post-content">
                     <div class="post-title-row">
                         <div class="post-title">${s.cleanName}</div>
-                        ${liveBadge}
                     </div>
                     ${link}
                 </div>
@@ -93,6 +77,5 @@ async function loadDiscussions() {
     });
 }
 
-// Auto-refresh every 60 seconds
 loadDiscussions();
 setInterval(loadDiscussions, 60000);
