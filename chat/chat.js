@@ -49,6 +49,10 @@ document.querySelectorAll("#room-list li").forEach(li => {
     li.classList.add("active");
 
     currentRoom = li.getAttribute("data-room");
+
+    // Update title bar
+    document.getElementById("room-title").textContent = li.textContent;
+
     loadMessages();
   });
 });
