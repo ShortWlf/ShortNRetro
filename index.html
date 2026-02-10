@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShortNRetro</title>
 
-    <!-- Retro Pixel Font -->
+    <!-- Pixel Retro Font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
         /* GLOBAL -------------------------------------------------- */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -18,6 +22,7 @@
             font-family: 'Press Start 2P', cursive;
             line-height: 1.8;
             text-align: center;
+
             background-image: radial-gradient(rgba(255, 0, 255, 0.05), transparent 70%);
             background-size: 800px 800px;
         }
@@ -34,14 +39,50 @@
         }
 
         section {
-            padding: 60px 20px;
+            padding: 80px 20px;
             max-width: 900px;
             margin: 0 auto;
         }
 
+        /* NAVBAR -------------------------------------------------- */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 0, 15, 0.9);
+            border-bottom: 2px solid #ff4df0;
+            padding: 15px 0;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .navbar a {
+            color: #ff4df0;
+            text-decoration: none;
+            font-size: 12px;
+            text-shadow: 0 0 6px #ff4df0;
+            transition: 0.2s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff;
+        }
+
         /* HERO -------------------------------------------------- */
         .hero {
-            padding: 80px 20px;
+            padding: 120px 20px 100px;
             background: linear-gradient(180deg, #1a001f, #050505);
             border-bottom: 3px solid #ff4df0;
         }
@@ -88,7 +129,7 @@
             text-shadow: 0 0 12px #ffffff;
         }
 
-        /* COMMUNITY -------------------------------------------------- */
+        /* BUTTON -------------------------------------------------- */
         .button {
             display: inline-block;
             margin-top: 30px;
@@ -109,7 +150,7 @@
 
         /* FOOTER -------------------------------------------------- */
         footer {
-            padding: 30px;
+            padding: 40px;
             font-size: 10px;
             color: #777;
         }
@@ -118,14 +159,25 @@
 
 <body>
 
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#schedule">Schedule</a></li>
+            <li><a href="#links">Links</a></li>
+            <li><a href="#community">Community</a></li>
+        </ul>
+    </nav>
+
     <!-- HERO HEADER -->
-    <header class="hero">
+    <header id="hero" class="hero">
         <h1>ShortNRetro</h1>
         <p class="tagline">Game Dev • Retro Vibes • Variety Streaming</p>
     </header>
 
     <!-- ABOUT US -->
-    <section class="about">
+    <section id="about" class="about">
         <h2>About Us</h2>
 
         <p><strong>Short</strong> — Game developer by day, variety streamer by night. Expect creative projects, new adventures, and curiosity‑driven chaos.</p>
@@ -136,14 +188,14 @@
     </section>
 
     <!-- SCHEDULE -->
-    <section class="schedule">
+    <section id="schedule" class="schedule">
         <h2>Stream Schedule</h2>
         <p>We stream between <strong>10AM – 1AM CST</strong>.</p>
         <p>Sometimes solo, sometimes co‑op — always a good time.</p>
     </section>
 
     <!-- LINKS -->
-    <section class="links">
+    <section id="links" class="links">
         <h2>Links</h2>
         <ul>
             <li><a href="https://twitch.tv/ShortNRetro" target="_blank">Twitch</a></li>
@@ -154,7 +206,7 @@
     </section>
 
     <!-- COMMUNITY -->
-    <section class="community">
+    <section id="community" class="community">
         <h2>Join the Community</h2>
         <p>Share ideas, ask questions, post fan art, and help shape the future of ShortNRetro.</p>
 
