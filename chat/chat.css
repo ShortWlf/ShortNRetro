@@ -62,9 +62,10 @@ body {
 /* CHAT LAYOUT */
 #layout {
   display: flex;
-  max-width: 900px;
+  width: 100%;
+  max-width: 1400px; /* gives you a bigger chat area */
   margin: 20px auto;
-  min-height: 500px;
+  min-height: 700px;
 }
 
 /* SIDEBAR */
