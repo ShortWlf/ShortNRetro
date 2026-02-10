@@ -2,26 +2,37 @@ async function loadDiscussions() {
     const container = document.getElementById("feed-container");
 
     try {
-        const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions");
-        const data = await response.json();
+        // Fetch ONLY Discussion #2
+        const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
+        const post = await response.json();
 
         container.innerHTML = ""; // clear loading text
 
-        data.forEach(post => {
+        // Extract URLs from the post body
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        const urls = post.body.match(urlRegex);
+
+        if (!urls || urls.length === 0) {
+            container.innerHTML = "<p>No streamers listed yet.</p>";
+            return;
+        }
+
+        urls.forEach(url => {
             const card = document.createElement("div");
             card.className = "post-card";
 
-            const title = `<div class="post-title">${post.title}</div>`;
-            const meta = `<div class="post-meta">Posted by ${post.user.login} — ${new Date(post.created_at).toLocaleString()}</div>`;
-            const body = `<div class="post-body">${post.body.slice(0, 200)}...</div>`;
-            const link = `<a class="post-link" href="${post.html_url}" target="_blank">Read Full Post</a>`;
+            // Extract hostname for title (e.g., twitch.tv/truestskeleton)
+            const hostname = url.replace("https://", "").replace("http://", "");
 
-            card.innerHTML = title + meta + body + link;
+            const title = `<div class="post-title">${hostname}</div>`;
+            const link = `<a class="post-link" href="${url}" target="_blank">${url}</a>`;
+
+            card.innerHTML = title + link;
             container.appendChild(card);
         });
 
     } catch (err) {
-        container.innerHTML = "<p>Failed to load community posts.</p>";
+        container.innerHTML = "<p>Failed to load streamer list.</p>";
     }
 }
 
