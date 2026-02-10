@@ -1,3 +1,4 @@
+/* GLOBAL */
 body {
   background: #050505;
   color: #ffffff;
@@ -6,9 +7,60 @@ body {
   padding: 0;
 }
 
+/* HEADER */
+#site-header {
+  text-align: center;
+  padding: 20px 0 10px 0;
+  background: linear-gradient(#1a001a, #050505);
+  border-bottom: 3px solid #ff7ae6;
+  box-shadow: 0 0 20px #ff7ae6;
+}
+
+#site-header .logo {
+  font-size: 2.4em;
+  color: #ff7ae6;
+  text-shadow: 0 0 12px #ff7ae6, 0 0 25px #b84dff;
+  margin: 0;
+}
+
+#site-header .tagline {
+  margin: 5px 0 0 0;
+  color: #ffbdf5;
+  font-size: 0.9em;
+}
+
+/* NAVBAR */
+#navbar {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 12px 0;
+  background: #0a0a0a;
+  border-bottom: 3px solid #ff7ae6;
+  box-shadow: 0 0 15px #ff7ae6;
+}
+
+#navbar a {
+  color: #ffbdf5;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.15s;
+}
+
+#navbar a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ff7ae6;
+}
+
+#navbar a.active {
+  color: #ff7ae6;
+  text-shadow: 0 0 12px #ff7ae6;
+}
+
+/* CHAT LAYOUT */
 #layout {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 200px);
 }
 
 /* SIDEBAR */
@@ -84,11 +136,6 @@ body {
 
 .message {
   margin-bottom: 10px;
-}
-
-.username {
-  color: #ff7ae6;
-  font-weight: bold;
 }
 
 /* INPUT BAR */
