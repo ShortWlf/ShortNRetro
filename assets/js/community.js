@@ -21,13 +21,28 @@ async function loadDiscussions() {
             const card = document.createElement("div");
             card.className = "post-card";
 
-            // Extract hostname for title (e.g., twitch.tv/truestskeleton)
-            const hostname = url.replace("https://", "").replace("http://", "");
+            // Extract Twitch username
+            let username = url
+                .replace("https://www.twitch.tv/", "")
+                .replace("http://www.twitch.tv/", "")
+                .replace("https://twitch.tv/", "")
+                .replace("http://twitch.tv/", "")
+                .trim();
 
-            const title = `<div class="post-title">${hostname}</div>`;
+            // Capitalize properly (TruestSkeleton)
+            const cleanName = username.charAt(0).toUpperCase() + username.slice(1);
+
+            // Twitch avatar API
+            const avatarUrl = `https://decapi.me/twitch/avatar/${username}`;
+
+            const avatar = `
+                <img src="${avatarUrl}" class="avatar" alt="${cleanName} avatar">
+            `;
+
+            const title = `<div class="post-title">${cleanName}</div>`;
             const link = `<a class="post-link" href="${url}" target="_blank">${url}</a>`;
 
-            card.innerHTML = title + link;
+            card.innerHTML = avatar + title + link;
             container.appendChild(card);
         });
 
