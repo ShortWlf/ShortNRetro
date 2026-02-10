@@ -2,11 +2,25 @@ async function loadDiscussions() {
     const container = document.getElementById("feed-container");
 
     try {
-        // Fetch ONLY Discussion #2
-        const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
+        // GitHub API requires headers now
+        const response = await fetch(
+            "https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2",
+            {
+                headers: {
+                    "Accept": "application/vnd.github.v3+json",
+                    "User-Agent": "ShortNRetroSite"
+                }
+            }
+        );
+
         const post = await response.json();
 
         container.innerHTML = ""; // clear loading text
+
+        if (!post || !post.body) {
+            container.innerHTML = "<p>Failed to load streamer list.</p>";
+            return;
+        }
 
         // Extract URLs from the post body
         const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -29,20 +43,12 @@ async function loadDiscussions() {
                 .replace("http://twitch.tv/", "")
                 .trim();
 
-            // Capitalize properly (TruestSkeleton)
             const cleanName = username.charAt(0).toUpperCase() + username.slice(1);
-
-            // Twitch avatar API
-            const avatarUrl = `https://decapi.me/twitch/avatar/${username}`;
-
-            const avatar = `
-                <img src="${avatarUrl}" class="avatar" alt="${cleanName} avatar">
-            `;
 
             const title = `<div class="post-title">${cleanName}</div>`;
             const link = `<a class="post-link" href="${url}" target="_blank">${url}</a>`;
 
-            card.innerHTML = avatar + title + link;
+            card.innerHTML = title + link;
             container.appendChild(card);
         });
 
@@ -52,3 +58,4 @@ async function loadDiscussions() {
 }
 
 loadDiscussions();
+setInterval(loadDiscussions, 60000);
