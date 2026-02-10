@@ -8,8 +8,112 @@
     <!-- Retro Pixel Font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* GLOBAL -------------------------------------------------- */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #050505;
+            color: #e0e0e0;
+            font-family: 'Press Start 2P', cursive;
+            line-height: 1.8;
+            text-align: center;
+            background-image: radial-gradient(rgba(255, 0, 255, 0.05), transparent 70%);
+            background-size: 800px 800px;
+        }
+
+        h1, h2 {
+            color: #ff4df0;
+            text-shadow:
+                0 0 6px #ff4df0,
+                0 0 12px #b300ff,
+                0 0 20px #ff4df0,
+                0 0 40px #b300ff;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        section {
+            padding: 60px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* HERO -------------------------------------------------- */
+        .hero {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #1a001f, #050505);
+            border-bottom: 3px solid #ff4df0;
+        }
+
+        .tagline {
+            font-size: 12px;
+            margin-top: 14px;
+            color: #ffb3fa;
+            text-shadow: 0 0 6px #ff4df0;
+        }
+
+        /* ABOUT -------------------------------------------------- */
+        .about p {
+            margin-bottom: 28px;
+        }
+
+        /* SCHEDULE -------------------------------------------------- */
+        .schedule {
+            background: #0a0a0a;
+            border-top: 2px solid #ff4df0;
+            border-bottom: 2px solid #ff4df0;
+        }
+
+        /* LINKS -------------------------------------------------- */
+        .links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .links li {
+            margin: 16px 0;
+        }
+
+        .links a {
+            color: #ff4df0;
+            text-decoration: none;
+            font-size: 14px;
+            text-shadow: 0 0 6px #ff4df0;
+            transition: 0.2s ease;
+        }
+
+        .links a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff;
+        }
+
+        /* COMMUNITY -------------------------------------------------- */
+        .button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 16px 26px;
+            background: #ff4df0;
+            color: #050505;
+            text-decoration: none;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 12px #ff4df0;
+            transition: 0.2s ease;
+        }
+
+        .button:hover {
+            background: #ffffff;
+            color: #050505;
+            box-shadow: 0 0 16px #ffffff;
+        }
+
+        /* FOOTER -------------------------------------------------- */
+        footer {
+            padding: 30px;
+            font-size: 10px;
+            color: #777;
+        }
+    </style>
 </head>
 
 <body>
@@ -23,9 +127,12 @@
     <!-- ABOUT US -->
     <section class="about">
         <h2>About Us</h2>
-        <p><strong>Short</strong> – Game developer by day, variety streamer by night. Expect creative projects, new adventures, and curiosity-driven chaos.</p>
-        <p><strong>Retro</strong> – Retro classics, point‑and‑clicks, and comfy gaming vibes. Nostalgia trips and modern gems alike.</p>
-        <p class="welcome">Grab a drink, get comfy, and hang out with us!</p>
+
+        <p><strong>Short</strong> — Game developer by day, variety streamer by night. Expect creative projects, new adventures, and curiosity‑driven chaos.</p>
+
+        <p><strong>Retro</strong> — Retro classics, point‑and‑clicks, and comfy gaming vibes. Nostalgia trips and modern gems alike.</p>
+
+        <p>Grab a drink, get comfy, and hang out with us!</p>
     </section>
 
     <!-- SCHEDULE -->
@@ -50,7 +157,10 @@
     <section class="community">
         <h2>Join the Community</h2>
         <p>Share ideas, ask questions, post fan art, and help shape the future of ShortNRetro.</p>
-        <a class="button" href="https://github.com/ShortWlf/ShortNRetro/discussions" target="_blank">Enter Discussions</a>
+
+        <a class="button" href="https://github.com/ShortWlf/ShortNRetro/discussions" target="_blank">
+            Enter Discussions
+        </a>
     </section>
 
     <!-- FOOTER -->
