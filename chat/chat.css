@@ -59,6 +59,22 @@ body {
   background: #0a0a0a;
 }
 
+/* TITLE BAR */
+#title-bar {
+  padding: 12px 20px;
+  background: #0f0f0f;
+  border-bottom: 3px solid #ff7ae6;
+  box-shadow: 0 0 15px #ff7ae6;
+}
+
+#title-bar h1 {
+  margin: 0;
+  font-size: 1.4em;
+  color: #ff7ae6;
+  text-shadow: 0 0 10px #ff7ae6, 0 0 20px #b84dff;
+}
+
+/* MESSAGES */
 #messages {
   flex: 1;
   padding: 20px;
@@ -75,6 +91,7 @@ body {
   font-weight: bold;
 }
 
+/* INPUT BAR */
 #input-bar {
   display: flex;
   padding: 10px;
