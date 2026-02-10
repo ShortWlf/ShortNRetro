@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community Members • ShortNRetro</title>
+    <title>TeamSpeak • ShortNRetro</title>
 
     <!-- Pixel Retro Font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
     <style>
-        /* GLOBAL -------------------------------------------------- */
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             margin: 0;
             padding: 0;
             background: #050505;
             color: #e0e0e0;
             font-family: 'Press Start 2P', cursive;
-            line-height: 1.8;
             text-align: center;
             background-image: radial-gradient(rgba(255, 0, 255, 0.04), transparent 70%);
             background-size: 800px 800px;
@@ -28,9 +22,7 @@
 
         h1, h2 {
             color: #ff7ae6;
-            text-shadow:
-                0 0 4px #ff7ae6,
-                0 0 10px #b84dff;
+            text-shadow: 0 0 4px #ff7ae6, 0 0 10px #b84dff;
             margin-bottom: 25px;
             letter-spacing: 2px;
         }
@@ -41,7 +33,7 @@
             margin: 0 auto;
         }
 
-        /* HEADER -------------------------------------------------- */
+        /* HEADER */
         .hero {
             padding: 120px 20px 60px;
             background: linear-gradient(180deg, #1a001f, #050505);
@@ -55,7 +47,7 @@
             text-shadow: 0 0 4px #ff7ae6;
         }
 
-        /* NAVBAR -------------------------------------------------- */
+        /* NAVBAR */
         .navbar {
             width: 100%;
             background: rgba(10, 0, 15, 0.85);
@@ -91,66 +83,35 @@
             text-shadow: 0 0 10px #ffffff;
         }
 
-        /* STREAMER CARDS ------------------------------------------ */
-        #feed-container {
-            margin-top: 40px;
-        }
-
-        .post-card {
+        /* WIDGET BOX */
+        .widget-box {
             background: #0a0a0a;
             border: 2px solid #ff7ae6;
             box-shadow: 0 0 10px #b84dff;
             padding: 25px;
-            margin-bottom: 40px;
             border-radius: 10px;
-            text-align: center;
+            margin-top: 40px;
         }
 
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            border: 2px solid #ff7ae6;
-            box-shadow: 0 0 10px #b84dff;
-            margin-bottom: 15px;
-        }
-
-        .post-title {
-            font-size: 14px;
-            color: #ffbdf4;
-            margin-bottom: 10px;
-        }
-
-        .post-link {
-            color: #ff7ae6;
-            text-decoration: none;
-            font-size: 12px;
-            text-shadow: 0 0 4px #ff7ae6;
-        }
-
-        .post-link:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px #ffffff;
-        }
-
-        /* LIVE BADGE ---------------------------------------------- */
-        .live-badge {
-            background: #ff003c;
-            color: white;
-            padding: 6px 10px;
+        /* QUICK CONNECT BUTTON */
+        .connect-btn {
             display: inline-block;
-            font-size: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            box-shadow: 0 0 10px #ff003c;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #ff7ae6;
+            color: #000;
+            font-size: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 0 10px #ff7ae6;
+            transition: 0.2s ease;
         }
 
-        .live-card {
-            border-color: #ff003c;
-            box-shadow: 0 0 15px #ff003c;
+        .connect-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 15px #ffffff;
         }
 
-        /* FOOTER -------------------------------------------------- */
         footer {
             padding: 40px;
             font-size: 10px;
@@ -161,13 +122,11 @@
 
 <body>
 
-    <!-- HEADER -->
     <header class="hero">
-        <h1>Community Members</h1>
-        <p class="tagline">Live & Offline Streamers from Our Community Thread</p>
+        <h1>TeamSpeak Server</h1>
+        <p class="tagline">Join the ShortNRetro Community Voice Chat</p>
     </header>
 
-    <!-- NAVBAR (under header, matching index.html) -->
     <nav class="navbar">
         <ul>
             <li><a href="index.html#hero">Home</a></li>
@@ -176,26 +135,32 @@
             <li><a href="index.html#links">Links</a></li>
             <li><a href="index.html#community">Community</a></li>
             <li><a href="community.html">Community Members</a></li>
+            <li><a href="teamspeak.html">TeamSpeak</a></li>
         </ul>
     </nav>
 
-    <!-- STREAMER LIST -->
     <section>
-        <h2>Streamer Directory</h2>
-        <p>Automatically updated from our GitHub Discussions thread.</p>
+        <h2>Live Server Status</h2>
 
-        <div id="feed-container">
-            <p>Loading streamer list...</p>
+        <div class="widget-box">
+            <!-- RAW QUERY WIDGET -->
+            <iframe 
+                src="https://ts3status.net/api/widget.php?ip=snrts.ddns.net&port=9987&query=10011&theme=dark"
+                width="100%" 
+                height="400" 
+                frameborder="0"
+                style="border-radius: 10px;">
+            </iframe>
+
+            <a class="connect-btn" href="ts3server://snrts.ddns.net?port=9987">
+                Connect to TeamSpeak
+            </a>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
         <p>© 2026 ShortNRetro</p>
     </footer>
-
-    <!-- JS FETCHER -->
-    <script src="assets/js/community.js"></script>
 
 </body>
 </html>
