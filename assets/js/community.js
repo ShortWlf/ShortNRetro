@@ -1,10 +1,24 @@
+async function safeFetch(url, type = "text") {
+    try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) return null;
+        return type === "json" ? await res.json() : await res.text();
+    } catch {
+        return null;
+    }
+}
+
 async function loadDiscussions() {
     const container = document.getElementById("feed-container");
 
     try {
         // Fetch ONLY Discussion #2
-        const response = await fetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2");
-        const post = await response.json();
+        const post = await safeFetch("https://api.github.com/repos/ShortWlf/ShortNRetro/discussions/2", "json");
+
+        if (!post || !post.body) {
+            container.innerHTML = "<p>Failed to load streamer list.</p>";
+            return;
+        }
 
         container.innerHTML = ""; // clear loading text
 
@@ -26,46 +40,26 @@ async function loadDiscussions() {
                     .replace("http://twitch.tv/", "")
                     .trim();
 
-                // Twitch user info (avatar, display name, bio, followers)
-                let userInfo = null;
-                try {
-                    userInfo = await fetch(`https://decapi.me/twitch/user/${username}`).then(r => r.json());
-                } catch {
-                    userInfo = {};
-                }
+                // Twitch user info
+                const userInfo = await safeFetch(`https://decapi.me/twitch/user/${username}`, "json") || {};
 
                 const avatarUrl = userInfo.logo || "";
                 const cleanName = userInfo.display_name || username;
                 const followers = typeof userInfo.followers === "number" ? userInfo.followers : null;
+
                 const bioFull = userInfo.bio || "";
                 const bio = bioFull.length > 80 ? bioFull.slice(0, 77) + "..." : bioFull;
 
-                // Twitch live status
-                let uptimeText = "";
-                let isLive = false;
-                try {
-                    uptimeText = await fetch(`https://decapi.me/twitch/uptime/${username}`).then(r => r.text());
-                    isLive = !uptimeText.toLowerCase().includes("offline");
-                } catch {
-                    isLive = false;
-                }
+                // Live status
+                const uptimeText = await safeFetch(`https://decapi.me/twitch/uptime/${username}`) || "offline";
+                const isLive = !uptimeText.toLowerCase().includes("offline");
 
-                // Game they’re playing
-                let game = "";
-                try {
-                    game = await fetch(`https://decapi.me/twitch/game/${username}`).then(r => r.text());
-                    if (game.toLowerCase().includes("offline")) game = "";
-                } catch {
-                    game = "";
-                }
+                // Game
+                let game = await safeFetch(`https://decapi.me/twitch/game/${username}`);
+                if (!game || game.toLowerCase().includes("offline")) game = "";
 
-                // Stream preview thumbnail
-                let thumbnailUrl = "";
-                try {
-                    thumbnailUrl = await fetch(`https://decapi.me/twitch/thumbnail/${username}`).then(r => r.text());
-                } catch {
-                    thumbnailUrl = "";
-                }
+                // Thumbnail
+                const thumbnailUrl = await safeFetch(`https://decapi.me/twitch/thumbnail/${username}`) || "";
 
                 return {
                     username,
@@ -110,7 +104,7 @@ async function loadDiscussions() {
                 : "";
 
             const thumbnail = s.thumbnailUrl
-                ? `<div class="thumbnail-wrapper"><img src="${s.thumbnailUrl}" class="thumbnail" alt="${s.cleanName} stream thumbnail"></div>`
+                ? `<div class="thumbnail-wrapper"><img src="${s.thumbnailUrl}" class="thumbnail"></div>`
                 : "";
 
             const link = `<a class="post-link" href="${s.url}" target="_blank">${s.url}</a>`;
