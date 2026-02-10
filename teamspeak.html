@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamSpeak • ShortNRetro</title>
+
+    <!-- Pixel Retro Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #050505;
+            color: #e0e0e0;
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            background-image: radial-gradient(rgba(255, 0, 255, 0.04), transparent 70%);
+            background-size: 800px 800px;
+        }
+
+        h1, h2 {
+            color: #ff7ae6;
+            text-shadow: 0 0 4px #ff7ae6, 0 0 10px #b84dff;
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+        }
+
+        section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .hero {
+            padding: 120px 20px 60px;
+            background: linear-gradient(180deg, #1a001f, #050505);
+            border-bottom: 2px solid #ff7ae6;
+        }
+
+        .tagline {
+            font-size: 12px;
+            margin-top: 14px;
+            color: #ffbdf4;
+            text-shadow: 0 0 4px #ff7ae6;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            background: rgba(10, 0, 15, 0.85);
+            border-bottom: 2px solid #ff7ae6;
+            padding: 15px 0;
+            backdrop-filter: blur(4px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navbar li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+
+        .navbar a {
+            color: #ff7ae6;
+            text-decoration: none;
+            font-size: 12px;
+            text-shadow: 0 0 4px #ff7ae6;
+            transition: 0.2s ease;
+        }
+
+        .navbar a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px #ffffff;
+        }
+
+        /* WIDGET BOX */
+        .widget-box {
+            background: #0a0a0a;
+            border: 2px solid #ff7ae6;
+            box-shadow: 0 0 10px #b84dff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        /* QUICK CONNECT BUTTON */
+        .connect-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #ff7ae6;
+            color: #000;
+            font-size: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 0 10px #ff7ae6;
+            transition: 0.2s ease;
+        }
+
+        .connect-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 15px #ffffff;
+        }
+
+        footer {
+            padding: 40px;
+            font-size: 10px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="hero">
+        <h1>TeamSpeak Server</h1>
+        <p class="tagline">Join the ShortNRetro Community Voice Chat</p>
+    </header>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html#hero">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#schedule">Schedule</a></li>
+            <li><a href="index.html#links">Links</a></li>
+            <li><a href="index.html#community">Community</a></li>
+            <li><a href="community.html">Community Members</a></li>
+            <li><a href="teamspeak.html">TeamSpeak</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <h2>Live Server Status</h2>
+
+        <div class="widget-box">
