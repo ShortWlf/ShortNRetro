@@ -1,67 +1,56 @@
-// CONFIG — your C# bot will run on this address
-const BOT_URL = "http://snrts.ddns.net:9877";
-
-// Current room
+// Your backend server URL
+const server = "http://snrts.ddns.net:9877"; 
 let currentRoom = "general";
 
-// Load messages for the selected room
+// Load messages from the server
 async function loadMessages() {
-  try {
-    const res = await fetch(`${BOT_URL}/room?name=${currentRoom}`);
-    const text = await res.text();
-
-    const messagesDiv = document.getElementById("messages");
-    messagesDiv.innerHTML = "";
-
-    text.split("\n").forEach(line => {
-      if (!line.trim()) return;
-      const div = document.createElement("div");
-      div.className = "message";
-      div.textContent = line;
-      messagesDiv.appendChild(div);
-    });
-
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  } catch (err) {
-    console.log("Error loading messages:", err);
-  }
+    try {
+        const res = await fetch(`${server}/room?name=${currentRoom}`);
+        const text = await res.text();
+        document.getElementById("messages").innerText = text;
+        autoScroll();
+    } catch (err) {
+        console.error("Load error:", err);
+    }
 }
 
-// Send a message
+// Send a message to the server
 async function sendMessage() {
-  const user = document.getElementById("username").value || "Anon";
-  const msg = document.getElementById("message").value;
+    const user = document.getElementById("username").value || "Anon";
+    const msg = document.getElementById("message").value;
 
-  if (!msg.trim()) return;
+    if (!msg.trim()) return;
 
-  await fetch(`${BOT_URL}/send?room=${currentRoom}&user=${encodeURIComponent(user)}&msg=${encodeURIComponent(msg)}`, {
-    method: "POST"
-  });
-
-  document.getElementById("message").value = "";
-  loadMessages();
+    try {
+        await fetch(
+            `${server}/send?room=${currentRoom}&user=${encodeURIComponent(user)}&msg=${encodeURIComponent(msg)}`
+        );
+        document.getElementById("message").value = "";
+        loadMessages();
+    } catch (err) {
+        console.error("Send error:", err);
+    }
 }
 
-// Room switching
-document.querySelectorAll("#room-list li").forEach(li => {
-  li.addEventListener("click", () => {
-    document.querySelectorAll("#room-list li").forEach(el => el.classList.remove("active"));
-    li.classList.add("active");
-
-    currentRoom = li.getAttribute("data-room");
-
-    // Update title bar
-    document.getElementById("room-title").textContent = li.textContent;
-
+// Switch chat rooms
+function switchRoom(room) {
+    currentRoom = room;
+    document.getElementById("room-title").innerText = room;
     loadMessages();
-  });
+}
+
+// Auto-scroll to bottom
+function autoScroll() {
+    const box = document.getElementById("messages");
+    box.scrollTop = box.scrollHeight;
+}
+
+// Auto-refresh messages every 1.5 seconds
+setInterval(loadMessages, 1500);
+
+// Allow Enter key to send messages
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
 });
-
-// Send button
-document.getElementById("send-btn").addEventListener("click", sendMessage);
-
-// Auto-refresh
-setInterval(loadMessages, 2000);
-
-// Initial load
-loadMessages();
