@@ -50,20 +50,19 @@ document.querySelectorAll("#room-list li").forEach(li => {
 
 function buildIRCUrl(room) {
     const channel = "#aghq_" + room;
-
-    // MUST encode # → %23
-    const encodedChannel = encodeURIComponent(channel);
+    const encodedChannel = encodeURIComponent(channel); // %23aghq_room
 
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
 
-    // New session token
+    // New session-ish token just to keep things unique
     const session = crypto.randomUUID();
 
-    // Strong cache buster
-    const cache = crypto.randomUUID();
+    // LiberaChat now uses a hash-based URL with an embedded ircs:// URL
+    // Example:
+    // https://web.libera.chat/#ircs://irc.libera.chat:6697/%23aghq_general?nick=RetroUser1234&session=...
+    const ircUrl = `ircs://irc.libera.chat:6697/${encodedChannel}?nick=${encodeURIComponent(nick)}&session=${encodeURIComponent(session)}`;
 
-    // LiberaChat requires channels= (plural)
-    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channels=${encodedChannel}&session=${session}&${cache}`;
+    return `https://web.libera.chat/#${ircUrl}`;
 }
 
 // DESTROY and RECREATE iframe to force new IRC session
@@ -81,7 +80,7 @@ function recreateIRCFrame(room) {
     newFrame.style.width = "100%";
     newFrame.style.height = "700px";
     newFrame.style.background = "#000";
-    newFrame.loading = "eager"; // force full reload
+    newFrame.loading = "eager";
     newFrame.src = buildIRCUrl(room);
 
     // Insert iframe RIGHT AFTER the title bar
