@@ -44,7 +44,7 @@ const ircFrame = document.getElementById("irc-frame");
 
 // Build LiberaChat URL for a given room id
 function buildIRCUrl(room) {
-    const channel = "#aghq_" + room;
+    const channel = "#aghq_" + room;   // namespace to avoid other rooms
 
     // Random nickname each time
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
@@ -52,10 +52,7 @@ function buildIRCUrl(room) {
     // Random session token to force a NEW connection
     const session = "s" + Math.random().toString(36).substring(2);
 
-    // Cache buster to force a NEW iframe load
-    const cache = "cb=" + Date.now() + Math.random();
-
-    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}&${cache}`;
+    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}`;
 }
 
 // Update iframe when room changes
