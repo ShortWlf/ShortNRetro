@@ -1,8 +1,21 @@
 // ------------------------------
-// ROOM SWITCHING + TITLE UPDATE
+// DEFAULT ROOM + TITLE UPDATE
 // ------------------------------
 
 let currentRoom = "general";
+
+// Force default room on page load
+window.addEventListener("load", () => {
+    currentRoom = "general";
+
+    // Reset sidebar highlight
+    document.querySelectorAll("#room-list li").forEach(li => {
+        li.classList.toggle("active", li.dataset.room === "general");
+    });
+
+    // Update title bar
+    updateRoomTitle("general");
+});
 
 // Update title bar text from room id
 function updateRoomTitle(room) {
@@ -33,24 +46,15 @@ document.querySelectorAll("#room-list li").forEach(li => {
     });
 });
 
-// Initialize title on load
-updateRoomTitle(currentRoom);
-
 // ------------------------------
 // LIBERACHAT IFRAME ROOM SWITCHING
 // ------------------------------
 
-// Build LiberaChat URL for a given room id
 function buildIRCUrl(room) {
     const channel = "#aghq_" + room;
 
-    // Random nickname each time
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
-
-    // Random session token to force a NEW connection
     const session = "s" + Math.random().toString(36).substring(2);
-
-    // Cache buster to force a NEW iframe load
     const cache = "cb=" + Date.now() + Math.random();
 
     return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}&${cache}`;
