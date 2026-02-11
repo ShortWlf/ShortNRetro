@@ -1,4 +1,4 @@
-const server = "http://snrts.ddns.net:9877";
+const server = "http://108.77.59.161:9877";
 let currentRoom = "general";
 
 async function loadMessages() {
