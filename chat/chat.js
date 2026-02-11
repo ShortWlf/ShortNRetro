@@ -29,7 +29,7 @@ document.querySelectorAll("#room-list li").forEach(li => {
     li.addEventListener("click", () => {
         const room = li.dataset.room;
         switchRoom(room);
-        updateIRCFrame(room);
+        recreateIRCFrame(room);
     });
 });
 
@@ -40,26 +40,42 @@ updateRoomTitle(currentRoom);
 // LIBERACHAT IFRAME ROOM SWITCHING
 // ------------------------------
 
-const ircFrame = document.getElementById("irc-frame");
-
 // Build LiberaChat URL for a given room id
 function buildIRCUrl(room) {
-    const channel = "#aghq_" + room;   // namespace to avoid other rooms
+    const channel = "#aghq_" + room;
 
     // Random nickname each time
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
 
-    // Random session token to force a NEW connection
+    // Random session token
     const session = "s" + Math.random().toString(36).substring(2);
 
-    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}`;
+    // Cache buster to force a NEW iframe load
+    const cache = "cb=" + Date.now() + Math.random();
+
+    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}&${cache}`;
 }
 
-// Update iframe when room changes
-function updateIRCFrame(room) {
-    if (!ircFrame) return;
-    ircFrame.src = buildIRCUrl(room);
+// DESTROY and RECREATE iframe to force new IRC session
+function recreateIRCFrame(room) {
+    const panel = document.getElementById("chat-panel");
+
+    // Remove old iframe
+    const oldFrame = document.getElementById("irc-frame");
+    if (oldFrame) oldFrame.remove();
+
+    // Create new iframe
+    const newFrame = document.createElement("iframe");
+    newFrame.id = "irc-frame";
+    newFrame.style.border = "0";
+    newFrame.style.width = "100%";
+    newFrame.style.height = "700px";
+    newFrame.style.background = "#000";
+    newFrame.src = buildIRCUrl(room);
+
+    // Append new iframe under the title bar
+    panel.appendChild(newFrame);
 }
 
-// Ensure iframe matches initial room on load
-updateIRCFrame(currentRoom);
+// Load initial room
+recreateIRCFrame(currentRoom);
