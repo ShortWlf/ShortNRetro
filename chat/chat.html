@@ -30,32 +30,38 @@
     <aside id="sidebar">
       <h2>Rooms</h2>
       <ul id="room-list">
-        <li class="active">General</li>
-        <li>Stream Talk</li>
-        <li>Ideas & Feedback</li>
-        <li>Tech Support</li>
-        <li>Off‑Topic</li>
-        <li>Announcements</li>
-        <li>Music</li>
-        <li>Gaming</li>
-        <li>Retro Tech</li>
+        <li data-room="general" class="active">General</li>
+        <li data-room="stream-talk">Stream Talk</li>
+        <li data-room="ideas-feedback">Ideas & Feedback</li>
+        <li data-room="tech-support">Tech Support</li>
+        <li data-room="off-topic">Off‑Topic</li>
+        <li data-room="announcements">Announcements</li>
+        <li data-room="music">Music</li>
+        <li data-room="gaming">Gaming</li>
+        <li data-room="retro-tech">Retro Tech</li>
       </ul>
     </aside>
 
     <main id="chat-panel">
 
       <div id="title-bar">
-        <h1 id="room-title">IRC Chat</h1>
+        <h1 id="room-title">General</h1>
       </div>
 
-<iframe
-    src="https://demo.thelounge.chat/"
-    style="width: 100%; height: 700px; border: none; background: #000;">
-</iframe>
+      <!-- CHAT WINDOW -->
+      <div id="messages"></div>
+
+      <!-- INPUT BAR -->
+      <div id="input-bar">
+        <input type="text" id="chat-input" placeholder="Type your message...">
+        <button id="send-btn">Send</button>
+      </div>
 
     </main>
 
   </div>
+
+  <script src="chat.js"></script>
 
 </body>
 </html>
