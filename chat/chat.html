@@ -42,39 +42,21 @@
       </ul>
     </aside>
 
-    <!-- ⭐ MAIN CHAT PANEL WITH INLINE TAWK.TO ⭐ -->
     <main id="chat-panel">
 
       <div id="title-bar">
-        <h1 id="room-title">Chat</h1>
+        <h1 id="room-title">IRC Chat</h1>
       </div>
 
-      <!-- INLINE TAWK.TO CONTAINER -->
-      <div id="tawk-inline-container" style="width:100%; height:600px;">
-        <!-- Tawk.to will inject the chat iframe here -->
-      </div>
+      <!-- ⭐ KiwiIRC embedded chat ⭐ -->
+      <iframe 
+        src="https://kiwiirc.com/client/irc.libera.chat/#ShortNRetro"
+        style="width:100%; height:100%; border:none; background:black;">
+      </iframe>
 
     </main>
 
   </div>
-
-  <!-- ⭐ INLINE TAWK.TO EMBED SCRIPT ⭐ -->
-  <script type="text/javascript">
-    var Tawk_API=Tawk_API||{};
-    Tawk_API.embedded = true; // tells Tawk.to to embed inline instead of floating bubble
-  </script>
-
-  <script type="text/javascript">
-  var Tawk_LoadStart=new Date();
-  (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/698c0a3b0c061c1c3f95c6c5/1jh5gfu0t';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-  })();
-  </script>
 
 </body>
 </html>
