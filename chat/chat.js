@@ -51,13 +51,15 @@ document.querySelectorAll("#room-list li").forEach(li => {
 // ------------------------------
 
 function buildIRCUrl(room) {
+    // IMPORTANT: # MUST be encoded as %23
     const channel = "#aghq_" + room;
+    const encodedChannel = encodeURIComponent(channel); // becomes %23aghq_room
 
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
     const session = "s" + Math.random().toString(36).substring(2);
     const cache = "cb=" + Date.now() + Math.random();
 
-    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}&${cache}`;
+    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodedChannel}&session=${session}&${cache}`;
 }
 
 // DESTROY and RECREATE iframe to force new IRC session
