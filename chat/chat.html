@@ -4,21 +4,16 @@
   <meta charset="UTF-8">
   <title>ShortNRetro Chat</title>
 
-  <!-- FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-  <!-- LOCAL CSS -->
   <link rel="stylesheet" href="chat.css">
 </head>
 <body>
 
-  <!-- SITE HEADER -->
   <header id="site-header">
     <h1 class="logo">ShortNRetro</h1>
     <p class="tagline">Game Dev • Retro Vibes • Variety Streaming</p>
   </header>
 
-  <!-- NAVIGATION BAR -->
   <nav id="navbar">
     <a href="https://shortwlf.github.io/ShortNRetro/#hero">Home</a>
     <a href="https://shortwlf.github.io/ShortNRetro/#about">About</a>
@@ -30,49 +25,37 @@
     <a href="https://shortwlf.github.io/ShortNRetro/teamspeak.html">TeamSpeak</a>
   </nav>
 
-  <!-- CHAT LAYOUT -->
   <div id="layout">
 
-    <!-- LEFT SIDEBAR -->
     <aside id="sidebar">
       <h2>Rooms</h2>
       <ul id="room-list">
-        <li onclick="switchRoom('general')" class="active">General</li>
-        <li onclick="switchRoom('stream-talk')">Stream Talk</li>
-        <li onclick="switchRoom('ideas-feedback')">Ideas & Feedback</li>
-        <li onclick="switchRoom('tech-support')">Tech Support</li>
-        <li onclick="switchRoom('off-topic')">Off‑Topic</li>
-        <li onclick="switchRoom('announcements')">Announcements</li>
-        <li onclick="switchRoom('music')">Music</li>
-        <li onclick="switchRoom('gaming')">Gaming</li>
-        <li onclick="switchRoom('retro-tech')">Retro Tech</li>
+        <li class="active">General</li>
+        <li>Stream Talk</li>
+        <li>Ideas & Feedback</li>
+        <li>Tech Support</li>
+        <li>Off‑Topic</li>
+        <li>Announcements</li>
+        <li>Music</li>
+        <li>Gaming</li>
+        <li>Retro Tech</li>
       </ul>
     </aside>
 
-    <!-- MAIN CHAT PANEL -->
     <main id="chat-panel">
-
-      <!-- TITLE BAR -->
       <div id="title-bar">
-        <h1 id="room-title">General</h1>
+        <h1 id="room-title">Chat</h1>
       </div>
 
-      <!-- MESSAGES -->
-      <div id="messages"></div>
-
-      <!-- INPUT BAR -->
-      <div id="input-bar">
-        <input id="username" placeholder="Name">
-        <input id="message" placeholder="Message">
-        <button onclick="sendMessage()">Send</button>
+      <div id="messages">
+        <p>Chat is loading…</p>
       </div>
-
     </main>
 
   </div>
 
-  <!-- LOCAL JS -->
-  <script src="chat.js"></script>
+  <!-- REMOVE THIS -->
+  <!-- <script src="chat.js"></script> -->
 
   <!--Start of Tawk.to Script-->
   <script type="text/javascript">
