@@ -7,7 +7,6 @@ let currentRoom = "general";
 window.addEventListener("load", () => {
     currentRoom = "general";
 
-    // Reset sidebar highlight
     document.querySelectorAll("#room-list li").forEach(li => {
         li.classList.toggle("active", li.dataset.room === "general");
     });
@@ -44,18 +43,12 @@ document.querySelectorAll("#room-list li").forEach(li => {
 });
 
 // ------------------------------
-// LIBERACHAT URL (CORRECT FORMAT)
+// LIBERACHAT URL (CHANNEL ONLY)
 // ------------------------------
 
 function buildIRCUrl(room) {
-    const channel = "#aghq_" + room;
-    const encodedChannel = encodeURIComponent(channel); // %23aghq_room
-
-    const nick = "RetroUser" + Math.floor(Math.random() * 9999);
-    const session = crypto.randomUUID();
-
-    // ✔ This is the ONLY format the new LiberaChat client accepts
-    return `https://web.libera.chat/#/?nick=${encodeURIComponent(nick)}&join=${encodedChannel}&session=${session}`;
+    // This is the ONLY format that makes the channel field clean
+    return `https://web.libera.chat/#aghq_${room}`;
 }
 
 // ------------------------------
@@ -65,11 +58,9 @@ function buildIRCUrl(room) {
 function recreateIRCFrame(room) {
     const titleBar = document.getElementById("title-bar");
 
-    // Remove old iframe
     const oldFrame = document.getElementById("irc-frame");
     if (oldFrame) oldFrame.remove();
 
-    // Create new iframe
     const newFrame = document.createElement("iframe");
     newFrame.id = "irc-frame";
     newFrame.style.border = "0";
@@ -79,7 +70,6 @@ function recreateIRCFrame(room) {
     newFrame.loading = "eager";
     newFrame.src = buildIRCUrl(room);
 
-    // Insert iframe RIGHT AFTER the title bar
     titleBar.insertAdjacentElement("afterend", newFrame);
 }
 
