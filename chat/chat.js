@@ -47,7 +47,8 @@ document.querySelectorAll("#room-list li").forEach(li => {
 // ------------------------------
 
 function buildIRCUrl(room) {
-    return `https://web.libera.chat/#/?join=%23aghq_${room}&theme=dark`;
+    // This is the ONLY format that makes the channel field clean
+    return `https://web.libera.chat/#aghq_${room}`;
 }
 
 // ------------------------------
