@@ -13,7 +13,6 @@ window.addEventListener("load", () => {
         li.classList.toggle("active", li.dataset.room === "general");
     });
 
-    // Update title bar
     updateRoomTitle("general");
 });
 
@@ -31,13 +30,12 @@ function switchRoom(room) {
     currentRoom = room;
     updateRoomTitle(room);
 
-    // Update active sidebar item
     document.querySelectorAll("#room-list li").forEach(li => {
         li.classList.toggle("active", li.dataset.room === room);
     });
 }
 
-// Attach click events to sidebar items
+// Sidebar click events
 document.querySelectorAll("#room-list li").forEach(li => {
     li.addEventListener("click", () => {
         const room = li.dataset.room;
@@ -51,28 +49,25 @@ document.querySelectorAll("#room-list li").forEach(li => {
 // ------------------------------
 
 function buildIRCUrl(room) {
-    // Build channel name
     const channel = "#aghq_" + room;
 
-    // Encode # → %23
+    // MUST encode # → %23
     const encodedChannel = encodeURIComponent(channel);
 
-    // Random nickname each time
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
 
-    // Random session token to force a NEW connection
-    const session = "s" + Math.random().toString(36).substring(2);
+    // New session token
+    const session = crypto.randomUUID();
 
-    // Cache buster to force a NEW iframe load
-    const cache = "cb=" + Date.now() + Math.random();
+    // Strong cache buster
+    const cache = crypto.randomUUID();
 
-    // IMPORTANT: LiberaChat uses channels= (plural)
+    // LiberaChat requires channels= (plural)
     return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channels=${encodedChannel}&session=${session}&${cache}`;
 }
 
 // DESTROY and RECREATE iframe to force new IRC session
 function recreateIRCFrame(room) {
-    const panel = document.getElementById("chat-panel");
     const titleBar = document.getElementById("title-bar");
 
     // Remove old iframe
@@ -86,6 +81,7 @@ function recreateIRCFrame(room) {
     newFrame.style.width = "100%";
     newFrame.style.height = "700px";
     newFrame.style.background = "#000";
+    newFrame.loading = "eager"; // force full reload
     newFrame.src = buildIRCUrl(room);
 
     // Insert iframe RIGHT AFTER the title bar
