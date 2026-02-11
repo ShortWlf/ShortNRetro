@@ -48,14 +48,12 @@
         <h1 id="room-title">General</h1>
       </div>
 
-      <!-- CHAT WINDOW -->
-      <div id="messages"></div>
-
-      <!-- INPUT BAR -->
-      <div id="input-bar">
-        <input type="text" id="chat-input" placeholder="Type your message...">
-        <button id="send-btn">Send</button>
-      </div>
+      <!-- LiberaChat iframe -->
+      <iframe
+          id="irc-frame"
+          src="https://web.libera.chat/?nick=RetroUser??&channel=#aghq_general"
+          style="border:0; width:100%; height:700px; background:#000;">
+      </iframe>
 
     </main>
 
