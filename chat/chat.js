@@ -40,17 +40,11 @@ updateRoomTitle(currentRoom);
 // LIBERACHAT IFRAME ROOM SWITCHING
 // ------------------------------
 
-// Build LiberaChat URL for a given room id
 function buildIRCUrl(room) {
     const channel = "#aghq_" + room;
 
-    // Random nickname each time
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
-
-    // Random session token
     const session = "s" + Math.random().toString(36).substring(2);
-
-    // Cache buster to force a NEW iframe load
     const cache = "cb=" + Date.now() + Math.random();
 
     return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}&session=${session}&${cache}`;
@@ -59,6 +53,7 @@ function buildIRCUrl(room) {
 // DESTROY and RECREATE iframe to force new IRC session
 function recreateIRCFrame(room) {
     const panel = document.getElementById("chat-panel");
+    const titleBar = document.getElementById("title-bar");
 
     // Remove old iframe
     const oldFrame = document.getElementById("irc-frame");
@@ -73,8 +68,8 @@ function recreateIRCFrame(room) {
     newFrame.style.background = "#000";
     newFrame.src = buildIRCUrl(room);
 
-    // Append new iframe under the title bar
-    panel.appendChild(newFrame);
+    // Insert iframe RIGHT AFTER the title bar
+    titleBar.insertAdjacentElement("afterend", newFrame);
 }
 
 // Load initial room
