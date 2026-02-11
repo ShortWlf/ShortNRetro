@@ -4,13 +4,16 @@
 
 let currentRoom = "general";
 
-// Update title bar
+// Update title bar text from room id
 function updateRoomTitle(room) {
     const title = document.getElementById("room-title");
-    title.textContent = room.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    const pretty = room
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, c => c.toUpperCase());
+    title.textContent = pretty;
 }
 
-// Switch room
+// Core room switch logic (UI only)
 function switchRoom(room) {
     currentRoom = room;
     updateRoomTitle(room);
@@ -19,18 +22,38 @@ function switchRoom(room) {
     document.querySelectorAll("#room-list li").forEach(li => {
         li.classList.toggle("active", li.dataset.room === room);
     });
-
-    // Clear messages when switching rooms (for now)
-    document.getElementById("messages").innerHTML = "";
 }
 
-// Attach click events to sidebar
+// Attach click events to sidebar items
 document.querySelectorAll("#room-list li").forEach(li => {
     li.addEventListener("click", () => {
         const room = li.dataset.room;
         switchRoom(room);
+        updateIRCFrame(room);
     });
 });
 
 // Initialize title on load
 updateRoomTitle(currentRoom);
+
+// ------------------------------
+// LIBERACHAT IFRAME ROOM SWITCHING
+// ------------------------------
+
+const ircFrame = document.getElementById("irc-frame");
+
+// Build LiberaChat URL for a given room id
+function buildIRCUrl(room) {
+    const channel = "#aghq_" + room;   // namespace to avoid other rooms
+    const nick = "RetroUser??";        // Libera will randomize ? chars
+    return `https://web.libera.chat/?nick=${encodeURIComponent(nick)}&channel=${encodeURIComponent(channel)}`;
+}
+
+// Update iframe when room changes
+function updateIRCFrame(room) {
+    if (!ircFrame) return;
+    ircFrame.src = buildIRCUrl(room);
+}
+
+// Ensure iframe matches initial room on load
+updateIRCFrame(currentRoom);
