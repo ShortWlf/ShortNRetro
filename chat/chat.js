@@ -7,6 +7,7 @@ let currentRoom = "general";
 window.addEventListener("load", () => {
     currentRoom = "general";
 
+    // Reset sidebar highlight
     document.querySelectorAll("#room-list li").forEach(li => {
         li.classList.toggle("active", li.dataset.room === "general");
     });
@@ -17,7 +18,9 @@ window.addEventListener("load", () => {
 // Update title bar text
 function updateRoomTitle(room) {
     const title = document.getElementById("room-title");
-    const pretty = room.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    const pretty = room
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, c => c.toUpperCase());
     title.textContent = pretty;
 }
 
@@ -31,6 +34,7 @@ function switchRoom(room) {
     });
 }
 
+// Sidebar click events
 document.querySelectorAll("#room-list li").forEach(li => {
     li.addEventListener("click", () => {
         const room = li.dataset.room;
@@ -40,28 +44,32 @@ document.querySelectorAll("#room-list li").forEach(li => {
 });
 
 // ------------------------------
-// NEW LIBERACHAT URL FORMAT
+// LIBERACHAT URL (CORRECT FORMAT)
 // ------------------------------
 
 function buildIRCUrl(room) {
     const channel = "#aghq_" + room;
-    const encodedChannel = encodeURIComponent(channel);
+    const encodedChannel = encodeURIComponent(channel); // %23aghq_room
 
     const nick = "RetroUser" + Math.floor(Math.random() * 9999);
     const session = crypto.randomUUID();
 
-    // NEW FORMAT:
-    // https://web.libera.chat/#ircs://irc.libera.chat:6697/%23aghq_general?nick=RetroUser1234&session=...
-    return `https://web.libera.chat/#ircs://irc.libera.chat:6697/${encodedChannel}?nick=${encodeURIComponent(nick)}&session=${session}`;
+    // ✔ This is the ONLY format the new LiberaChat client accepts
+    return `https://web.libera.chat/#/?nick=${encodeURIComponent(nick)}&join=${encodedChannel}&session=${session}`;
 }
 
-// Recreate iframe
+// ------------------------------
+// IFRAME RECREATION
+// ------------------------------
+
 function recreateIRCFrame(room) {
     const titleBar = document.getElementById("title-bar");
 
+    // Remove old iframe
     const oldFrame = document.getElementById("irc-frame");
     if (oldFrame) oldFrame.remove();
 
+    // Create new iframe
     const newFrame = document.createElement("iframe");
     newFrame.id = "irc-frame";
     newFrame.style.border = "0";
@@ -71,6 +79,7 @@ function recreateIRCFrame(room) {
     newFrame.loading = "eager";
     newFrame.src = buildIRCUrl(room);
 
+    // Insert iframe RIGHT AFTER the title bar
     titleBar.insertAdjacentElement("afterend", newFrame);
 }
 
